@@ -12,6 +12,26 @@ class jeu():
             return True
         else:
             return False
+    
+    def pousser(self, objet, direction):
+        objet.location = self.carte.trouver_location(objet)
+        i, j = objet.location[0], objet.location[1]
+        if direction == "Z":
+            self.deplacement(objet, i-1, j)
+        elif direction == "S":
+            self.deplacement(objet, i+1, j)
+        elif direction == "Q":
+            self.deplacement(objet, i, j-1)
+        elif direction == "Z":
+            self.deplacement(objet, i, j+1)
+        else:
+            return
+    
+    def poussable(self, objet):
+        if type(objet) == boite:
+            return True
+        else:
+            return False
         
     def deplacement(self, objet, i, j):
         if self.deplacement_possible(i,j):
@@ -25,18 +45,34 @@ class jeu():
         
     def deplacement_haut(self, objet):
         i_0, j_0  = objet.location[0], objet.location[1]
-        self.deplacement(objet, i_0-1,j_0)
+        i, j = i_0 - 1, j_0
+        object_here = self.carte.what_object_is_there(i,j)
+        if self.poussable(object_here):
+            self.pousser(object_here, "Z")
+        self.deplacement(objet, i,j)
         
     def deplacement_bas(self, objet):
         i_0, j_0  = objet.location[0], objet.location[1]
-        self.deplacement(objet,i_0+1,j_0)
+        i, j = i_0 + 1, j_0
+        object_here = self.carte.what_object_is_there(i,j)
+        if self.poussable(object_here):
+            self.pousser(object_here, "S")
+        self.deplacement(objet,i,j)
         
     def deplacement_gauche(self, objet):
         i_0, j_0  = objet.location[0], objet.location[1]
+        i, j = i_0, j_0 - 1
+        object_here = self.carte.what_object_is_there(i,j)
+        if self.poussable(object_here):
+            self.pousser(object_here, "Q")
         self.deplacement(objet,i_0,j_0-1)
         
     def deplacement_droite(self, objet):
         i_0, j_0  = objet.location[0], objet.location[1]
+        i, j = i_0, j_0 + 1
+        object_here = self.carte.what_object_is_there(i,j)
+        if self.poussable(object_here):
+            self.pousser(object_here, "D")
         self.deplacement(objet,i_0,j_0+1)        
 
     def bouger(self,objet):
