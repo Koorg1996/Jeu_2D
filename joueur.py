@@ -1,8 +1,8 @@
 import objet_case
 
-class mur(objet_case):
+class joueur(objet_case):
     def __init__(self):
-        self.icone = "x"
+        self.icone = "o" 
         super().__init__()
 
 
